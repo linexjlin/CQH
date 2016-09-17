@@ -98,8 +98,17 @@ func main() {
 
 	log.SetOutput(f)
 
-	rcvPort := 11236
-	cqPort := 11235
+	// read port number from ini
+	cw := ConfWorker{}
+	cw.Init("./app/org.dazzyd.cqsocketapi/config.ini")
+	v := cw.ValueRoom("Server", "SERVER_PORT")
+	port, _ := strconv.Atoi(v)
+	if !(port > 1) {
+		log.Println("port error", v)
+		return
+	}
+	cqPort := port
+	rcvPort := port + 1
 
 begin:
 	s, e := net.DialUDP("udp4",
