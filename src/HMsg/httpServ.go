@@ -52,13 +52,16 @@ func msgSend(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("OK\n"))
 }
 
-func StartServ() {
+func StartServ(listenAddr string) {
 	http.HandleFunc("/send", msgSend)
 
 	srv := &http.Server{
-		Addr:         ":11235",
+		Addr:         listenAddr,
 		ReadTimeout:  time.Second * 90,
 		WriteTimeout: time.Second * 90,
 	}
-	srv.ListenAndServe()
+	err := srv.ListenAndServe()
+	if err != nil {
+		log.Panic(err)
+	}
 }

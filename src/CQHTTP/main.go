@@ -126,7 +126,8 @@ begin:
 	log.Println("success connect to local upd 11253 ")
 
 	go SayHelloKeepAlive(s, rcvPort)
-	go HMsg.StartServ()
+	httpListenAddr := ":" + strconv.Itoa(rcvPort)
+	go HMsg.StartServ(httpListenAddr)
 	go SendMsg(s)
 
 	RcvMsgFromCQ(rcvPort)
